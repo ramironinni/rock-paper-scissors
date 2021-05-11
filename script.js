@@ -65,14 +65,12 @@ window.addEventListener("DOMContentLoaded", () => {
         
     // Create a function called game(). Use the previous function inside of this one to play a 5 round game
     // that keeps score and reports a winner or loser at the end.
-    function game(){
+    function playGame(){
         let userScore = 0;
         let computerScore = 0;
 
         for (let i = 0; i < 5; i++) {
             let playerAnswer = prompt("Rock, paper or scissors?");
-
-            let pass;
 
             while(playerAnswer === null || playerAnswer === "" ) {
                 playerAnswer = prompt("Please, choose an option. Rock, paper or scissors?");
@@ -88,28 +86,34 @@ window.addEventListener("DOMContentLoaded", () => {
                 computerScore += 1;
             }
 
-            console.log(`${resultMessage} User score: ${userScore}. Computer score: ${computerScore}`);
-            if(i === 4){
-                let winner;
-                if(userScore > computerScore){
-                    winner = "YOU!";
-                } else if (userScore < computerScore){
-                    winner = "COMPUTER!";
-                } else if(userScore === computerScore){
-                    winner = "NOBODY! PLAY AGAIN";
-                }
+            const roundMessage = `${resultMessage} User score: ${userScore}. Computer score: ${computerScore}`;
+            console.log(roundMessage);
 
-                console.log(`
-                ********************************
-                Final score
-                >> User score: ${userScore}
-                >> Computer score: ${computerScore}
-                WINNER: ${winner}
-                ********************************`)
+            if(i === 4){
+                showFinalResult(userScore, computerScore);
             }
         }
     }
 
-    game()
+    function showFinalResult(userScore, computerScore) {
+        let winner;
+        if(userScore > computerScore){
+            winner = "YOU!";
+        } else if (userScore < computerScore){
+            winner = "COMPUTER!";
+        } else if(userScore === computerScore){
+            winner = "NOBODY! PLAY AGAIN";
+        }
+
+        console.log(`
+        ********************************
+        Final score
+        >> User score: ${userScore}
+        >> Computer score: ${computerScore}
+        WINNER: ${winner}
+        ********************************`);
+    }
+
+    playGame()
 
 })
