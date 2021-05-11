@@ -72,7 +72,9 @@ window.addEventListener("DOMContentLoaded", () => {
         for (let i = 0; i < 5; i++) {
             let playerAnswer = prompt("Rock, paper or scissors?");
 
-            while(playerAnswer === null || playerAnswer === "") {
+            let pass;
+
+            while(playerAnswer === null || playerAnswer === "" ) {
                 playerAnswer = prompt("Please, choose an option. Rock, paper or scissors?");
             }
 
@@ -86,15 +88,24 @@ window.addEventListener("DOMContentLoaded", () => {
                 computerScore += 1;
             }
 
-            console.log(`${resultMessage} User score: ${userScore}. Computer score: ${computerScore}}`);
+            console.log(`${resultMessage} User score: ${userScore}. Computer score: ${computerScore}`);
             if(i === 4){
                 let winner;
                 if(userScore > computerScore){
-                    winner = "YOU!"
-                } else {
-                    winner = "COMPUTER!"
+                    winner = "YOU!";
+                } else if (userScore < computerScore){
+                    winner = "COMPUTER!";
+                } else if(userScore === computerScore){
+                    winner = "NOBODY! PLAY AGAIN";
                 }
-                console.log(`Final score \nUser score: ${userScore}. Computer score: ${computerScore}} \nWINNER: ${winner}`)
+
+                console.log(`
+                ********************************
+                Final score
+                >> User score: ${userScore}
+                >> Computer score: ${computerScore}
+                WINNER: ${winner}
+                ********************************`)
             }
         }
     }
