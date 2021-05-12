@@ -1,6 +1,8 @@
 window.addEventListener("DOMContentLoaded", () => {
     
     const elements = ["rock", "paper", "scissors"];
+
+    playGame()
     
     function computerPlay(){
         const randomElement = Math.floor(Math.random() * elements.length);
@@ -87,6 +89,18 @@ window.addEventListener("DOMContentLoaded", () => {
 
             const result = playRound(playerAnswer, computerPlay());
 
+            const roundResult = showRoundResult(result, userScore, computerScore);
+
+            userScore = roundResult.userScore;
+            computerScore = roundResult.computerScore;
+
+            console.log(roundResult.message);
+        }
+
+        showFinalResult(userScore, computerScore);
+    }
+
+    function showRoundResult(result, userScore, computerScore){
             if(result.userWin){
                 userScore += 1;
                 result.message += " You win!"
@@ -95,11 +109,13 @@ window.addEventListener("DOMContentLoaded", () => {
                 result.message += " You loose!"
             }
 
-            const roundMessage = `${result.message} User score: ${userScore}. Computer score: ${computerScore}`;
-            console.log(roundMessage);
-        }
-
-        showFinalResult(userScore, computerScore);
+            const message = `${result.message} User score: ${userScore}. Computer score: ${computerScore}`;
+            const roundResult = {
+                message,
+                userScore,
+                computerScore
+            }
+            return roundResult;
     }
 
     function showFinalResult(userScore, computerScore) {
@@ -120,7 +136,4 @@ window.addEventListener("DOMContentLoaded", () => {
         WINNER: ${winner}
         ********************************`);
     }
-
-    playGame()
-
 })
