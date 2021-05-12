@@ -30,27 +30,49 @@ window.addEventListener("DOMContentLoaded", () => {
 
         const result = checkResults(playerElement, computerElement)
         return result;
-
     }    
     
     function checkResults(playerElement, computerElement){
-        if (playerElement === 1 && computerElement === 0) {
-            return ["Paper beats rock. You win!", true];
-        } else if (playerElement === 0 && computerElement === 2) {
-            return ["Rock beats scissors. You win!", true];
-        } else if (playerElement === 2 && computerElement === 1) {
-            return ["Scissors beats paper. You win!", true];
-        } else if (playerElement === 0 && computerElement === 1) {
-            return ["Paper beats rock. You loose!", false];
-        } else if (playerElement === 2 && computerElement === 0) {
-            return ["Rock beats scissors. You loose!", false];
-        } else if (playerElement === 1 && computerElement === 2) {
-            return ["Scissors beats paper. You loose!", false];
-        } else if (playerElement === computerElement) {
-            return ["We have a tie! Try again.", null];
+        const result = {
+            message: null,
+            userWin: false
+        };
+        
+        if (playerElement === computerElement) {
+            result.message = "You're tied! Try again";
+            result.userWin = null;
+            return result;
         }
+
+        let sum = playerElement + computerElement;
+
+        switch (sum) {
+            case 1:
+                result.message = "Paper beats rock."
+                if (playerElement === 1) {
+                    result.userWin = true;                
+                }
+                break;
+            case 2:
+                result.message = "Rock beats scissors."
+                if (playerElement === 0) {
+                    result.userWin = true;                
+                }
+                break;
+            case 3:
+                result.message = "Scissors beats paper."
+                if (playerElement === 2) {
+                    result.userWin = true;                
+                }
+                break;        
+            default:
+                result.message = "It seems there's a bug."
+                break;
+        }      
+        
+        return result;
     }
-    
+        
     
     function playGame(){
         let userScore = 0;
@@ -63,17 +85,17 @@ window.addEventListener("DOMContentLoaded", () => {
                 playerAnswer = prompt("Please, choose an option. Rock, paper or scissors?");
             }
 
-            const resultData = playRound(playerAnswer, computerPlay());
-            const resultMessage = resultData[0];
-            const userWin = resultData[1];
+            const result = playRound(playerAnswer, computerPlay());
 
-            if(userWin){
+            if(result.userWin){
                 userScore += 1;
-            } else if(userWin === false){
+                result.message += " You win!"
+            } else if(result.userWin === false){
                 computerScore += 1;
+                result.message += " You loose!"
             }
 
-            const roundMessage = `${resultMessage} User score: ${userScore}. Computer score: ${computerScore}`;
+            const roundMessage = `${result.message} User score: ${userScore}. Computer score: ${computerScore}`;
             console.log(roundMessage);
         }
 
