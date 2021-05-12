@@ -1,21 +1,11 @@
 window.addEventListener("DOMContentLoaded", () => {
     
-    // Create a variable called elements for the list of elements
     const elements = ["rock", "paper", "scissors"];
     
-    // Create a function that will randomly return one of the elements from the list
     function computerPlay(){
-        // Select randomly an element form the elements
         const randomElement = Math.floor(Math.random() * elements.length);
-
-        // return the value
         return randomElement;
     }
-
-    // Create a function that plays a single round of Rock Paper Scissors
-    // It takes two parameters (playerSelection, computerSelection)
-    // and then return a string that declares the winner of the round
-    
 
     function playRound(playerSelection, computerSelection){
         const computerElement = computerSelection;
@@ -38,7 +28,6 @@ window.addEventListener("DOMContentLoaded", () => {
                 break;
         }
 
-        // compare results and send message
         const result = checkResults(playerElement, computerElement)
         return result;
 
@@ -61,10 +50,8 @@ window.addEventListener("DOMContentLoaded", () => {
             return ["We have a tie! Try again.", null];
         }
     }
-
-        
-    // Create a function called game(). Use the previous function inside of this one to play a 5 round game
-    // that keeps score and reports a winner or loser at the end.
+    
+    
     function playGame(){
         let userScore = 0;
         let computerScore = 0;
@@ -88,11 +75,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
             const roundMessage = `${resultMessage} User score: ${userScore}. Computer score: ${computerScore}`;
             console.log(roundMessage);
-
-            if(i === 4){
-                showFinalResult(userScore, computerScore);
-            }
         }
+
+        showFinalResult(userScore, computerScore);
     }
 
     function showFinalResult(userScore, computerScore) {
