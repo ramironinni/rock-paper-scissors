@@ -12,17 +12,15 @@ window.addEventListener("DOMContentLoaded", () => {
     function playRound(playerSelection, computerSelection){
         const computerElement = computerSelection;
 
-        const playerSanitized = playerSelection.trim().toLowerCase();
-
         let playerElement;
-        switch (playerSanitized) {
-            case "rock":
+        switch (playerSelection) {
+            case "btn-rock":
                 playerElement = 0;
                 break;
-            case "paper":
+            case "btn-paper":
                 playerElement = 1;
                 break;
-            case "scissors":
+            case "btn-scissors":
                 playerElement = 2;
                 break;        
             default:
@@ -37,12 +35,12 @@ window.addEventListener("DOMContentLoaded", () => {
     function checkResults(playerElement, computerElement){
         const result = {
             message: null,
-            userWin: false
+            playerWin: false
         };
         
         if (playerElement === computerElement) {
             result.message = "You're tied! Try again";
-            result.userWin = null;
+            result.playerWin = null;
             return result;
         }
 
@@ -52,19 +50,19 @@ window.addEventListener("DOMContentLoaded", () => {
             case 1:
                 result.message = "Paper beats rock."
                 if (playerElement === 1) {
-                    result.userWin = true;                
+                    result.playerWin = true;                
                 }
                 break;
             case 2:
                 result.message = "Rock beats scissors."
                 if (playerElement === 0) {
-                    result.userWin = true;                
+                    result.playerWin = true;                
                 }
                 break;
             case 3:
                 result.message = "Scissors beats paper."
                 if (playerElement === 2) {
-                    result.userWin = true;                
+                    result.playerWin = true;                
                 }
                 break;        
             default:
@@ -77,63 +75,91 @@ window.addEventListener("DOMContentLoaded", () => {
         
     
     function playGame(){
-        let userScore = 0;
+        const roundResultContainer = document.getElementById("round-result-container");
+        roundResultContainer.innerText = "";
+
+        const finalScore = document.getElementById("final-score");
+        finalScore.textContent = "";
+        
+        let playerScore = 0;
         let computerScore = 0;
+        let round = 0;
 
-        for (let i = 0; i < 5; i++) {
-            let playerAnswer = prompt("Rock, paper or scissors?");
+        const btnContainer = document.getElementById("player-selection-container");
 
-            while(playerAnswer === null || playerAnswer === "" ) {
-                playerAnswer = prompt("Please, choose an option. Rock, paper or scissors?");
+
+        btnContainer.addEventListener("click", (e) => {
+            round += 1;
+            if (round <= 5) {
+                
+                const playerSelection = e.target.id;            
+                
+                const result = playRound(playerSelection, computerPlay());
+                const roundResult = showRoundResult(result, playerScore, computerScore);
+                
+                playerScore = roundResult.playerScore;
+                computerScore = roundResult.computerScore;
+                
+                const roundResultMessage = document.createElement("p");
+                roundResultMessage.innerText = roundResult.message;
+                roundResultContainer.appendChild(roundResultMessage);
             }
-
-            const result = playRound(playerAnswer, computerPlay());
-
-            const roundResult = showRoundResult(result, userScore, computerScore);
-
-            userScore = roundResult.userScore;
-            computerScore = roundResult.computerScore;
-
-            console.log(roundResult.message);
-        }
-
-        showFinalResult(userScore, computerScore);
+        
+            if (round === 5) {
+                showFinalResult(playerScore, computerScore);
+                askPlayAgain();
+            }            
+        })
     }
 
-    function showRoundResult(result, userScore, computerScore){
-            if(result.userWin){
-                userScore += 1;
+    function showRoundResult(result, playerScore, computerScore){
+            if(result.playerWin){
+                playerScore += 1;
                 result.message += " You win!"
-            } else if(result.userWin === false){
+            } else if(result.playerWin === false){
                 computerScore += 1;
                 result.message += " You loose!"
             }
 
-            const message = `${result.message} User score: ${userScore}. Computer score: ${computerScore}`;
+            const message = `${result.message} Player score: ${playerScore}. Computer score: ${computerScore}`;
             const roundResult = {
                 message,
-                userScore,
+                playerScore: playerScore,
                 computerScore
             }
             return roundResult;
     }
 
-    function showFinalResult(userScore, computerScore) {
+    function showFinalResult(playerScore, computerScore) {
+        const finalScore = document.getElementById("final-score");
+
         let winner;
-        if(userScore > computerScore){
+        if(playerScore > computerScore){
             winner = "YOU!";
-        } else if (userScore < computerScore){
+        } else if (playerScore < computerScore){
             winner = "COMPUTER!";
-        } else if(userScore === computerScore){
+        } else if(playerScore === computerScore){
             winner = "NOBODY! PLAY AGAIN";
         }
 
-        console.log(`
-        ********************************
+        finalScore.textContent = `
         Final score
-        >> User score: ${userScore}
+        >> Player score: ${playerScore}
         >> Computer score: ${computerScore}
-        WINNER: ${winner}
-        ********************************`);
+        WINNER: ${winner}`;
+    }
+
+    function askPlayAgain(){
+        const playAgainContainer = document.getElementById("play-again-container");
+        playAgainContainer.classList.remove("hidden");
+        playAgainContainer.addEventListener("click", (e) => {
+            if (e.target.id === "btn-again-yes") {
+                playAgainContainer.classList.add("hidden")
+                playGame();
+            }
+            if (e.target.id === "btn-again-no") {
+                console.log("BYE")
+            }
+        } )
     }
 })
