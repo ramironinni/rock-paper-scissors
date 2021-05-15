@@ -1,8 +1,10 @@
 window.addEventListener("DOMContentLoaded", () => {
     
     const elements = ["rock", "paper", "scissors"];
+    let round = 0;
+    let playerScore = 0;
+    let computerScore = 0;
 
-    playGame()
     
     function computerPlay(){
         const randomElement = Math.floor(Math.random() * elements.length);
@@ -74,42 +76,49 @@ window.addEventListener("DOMContentLoaded", () => {
     }
         
     
-    function playGame(){
+    function playGame(again){
         const roundResultContainer = document.getElementById("round-result-container");
         roundResultContainer.innerText = "";
 
         const finalScore = document.getElementById("final-score");
         finalScore.textContent = "";
         
-        let playerScore = 0;
-        let computerScore = 0;
-        let round = 0;
+        playerScore = 0;
+        computerScore = 0;
+        round = 0;
+        console.log("round outside event: " + round)
 
         const btnContainer = document.getElementById("player-selection-container");
 
-
-        btnContainer.addEventListener("click", (e) => {
-            round += 1;
-            if (round <= 5) {
+        if (!again) {
+            btnContainer.addEventListener("click", (e) => {
+            const targetId = e.target.id;
+            if (targetId !== btnContainer.id) {
+                console.log("round in event: " + round)
+                round += 1;
+                if (round <= 5) {
+                    
+                    const playerSelection = e.target.id;            
+                    
+                    const result = playRound(playerSelection, computerPlay());
+                    const roundResult = showRoundResult(result, playerScore, computerScore);
+                    
+                    playerScore = roundResult.playerScore;
+                    computerScore = roundResult.computerScore;
+                    
+                    const roundResultMessage = document.createElement("p");
+                    roundResultMessage.innerText = roundResult.message;
+                    roundResultContainer.appendChild(roundResultMessage);
+                }
                 
-                const playerSelection = e.target.id;            
-                
-                const result = playRound(playerSelection, computerPlay());
-                const roundResult = showRoundResult(result, playerScore, computerScore);
-                
-                playerScore = roundResult.playerScore;
-                computerScore = roundResult.computerScore;
-                
-                const roundResultMessage = document.createElement("p");
-                roundResultMessage.innerText = roundResult.message;
-                roundResultContainer.appendChild(roundResultMessage);
+                if (round === 5) {
+                    showFinalResult(playerScore, computerScore);
+                    askPlayAgain();
+                }            
             }
-        
-            if (round === 5) {
-                showFinalResult(playerScore, computerScore);
-                askPlayAgain();
-            }            
         })
+        }
+        
     }
 
     function showRoundResult(result, playerScore, computerScore){
@@ -155,11 +164,14 @@ window.addEventListener("DOMContentLoaded", () => {
         playAgainContainer.addEventListener("click", (e) => {
             if (e.target.id === "btn-again-yes") {
                 playAgainContainer.classList.add("hidden")
-                playGame();
+                playGame(true);
             }
             if (e.target.id === "btn-again-no") {
                 console.log("BYE")
             }
         } )
     }
+
+    playGame(false)
+
 })
