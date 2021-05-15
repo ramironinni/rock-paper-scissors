@@ -1,3 +1,56 @@
+body {
+    margin: 0;
+    font-family: "Raleway", sans-serif;
+}
+
+.material-icons {
+    font-family: "Material Icons";
+}
+
+h1 {
+    text-align: center;
+    margin: 0;
+    padding: 30px;
+}
+
+#selections-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+#player-selection-container,
+#computer-selection-container {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    align-items: center;
+}
+
+.btn-selection {
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    color: #fff;
+    background-color: #8a00b8;
+    border-radius: 10px;
+}
+
+.computer-selection {
+    background-color: #767676;
+}
+
+.player-selection {
+    cursor: pointer;
+}
+
+.player-selection:hover {
+    background-color: #fcaa2e;
+}
+
+#wrapper {
+    background-color: #e2d2b3;
+}
+
 .hidden {
     display: none;
 }
