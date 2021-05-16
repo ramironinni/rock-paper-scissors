@@ -1,81 +1,76 @@
 window.addEventListener("DOMContentLoaded", () => {
     const elements = ["rock", "paper", "scissors"];
-    let roundNumber;
-    let playerScore;
-    let computerScore;
+    let roundNumber = 0;
+    let playerScore = 0;
+    let computerScore = 0;
 
     function playGame() {
-        const roundResultContainer = document.getElementById(
-            "round-result-container"
-        );
-        roundResultContainer.innerText = "";
-
-        const finalScoreDiv = document.getElementById("final-score");
-        finalScoreDiv.textContent = "";
-
-        playerScore = 0;
-        computerScore = 0;
-        roundNumber = 0;
-
-        const btnContainer = document.getElementById(
+        const playerSelectionContainer = document.getElementById(
             "player-selection-container"
         );
 
-        btnContainer.addEventListener("click", (e) => {
-            const targetId = e.target.id;
-            if (targetId !== btnContainer.id) {
-                roundNumber += 1;
-                if (roundNumber <= 5) {
-                    e.target.classList.add("active");
-                    setTimeout(() => {
-                        e.target.classList.remove("active");
-                    }, 1000);
-
-                    const playerSelection = e.target.id;
-
-                    const computerPlayResult = computerPlay();
-                    const computerPlaySpan = document.getElementById(
-                        `computer-selection-${computerPlayResult}`
-                    );
-
-                    computerPlaySpan.classList.add("active");
-                    setTimeout(() => {
-                        computerPlaySpan.classList.remove("active");
-                    }, 1000);
-
-                    const result = playRound(
-                        playerSelection,
-                        computerPlayResult
-                    );
-                    const roundResult = showRoundResult(
-                        result,
-                        playerScore,
-                        computerScore
-                    );
-
-                    playerScore = roundResult.playerScore;
-                    computerScore = roundResult.computerScore;
-
-                    const roundResultMessage = document.createElement("p");
-                    roundResultMessage.innerText = roundResult.message;
-                    roundResultContainer.appendChild(roundResultMessage);
-                }
-
-                if (roundNumber === 5) {
-                    showFinalResult(playerScore, computerScore);
-                    askPlayAgain();
-                }
-            }
-        });
+        playerSelectionContainer.addEventListener("click", processSelection);
     }
 
-    function computerPlay() {
+    function processSelection(e) {
+        const playerSelectionSpan = e.target;
+        const playerSelectionId = e.target.id;
+
+        if (playerSelectionId !== this.id) {
+            roundNumber += 1;
+            if (roundNumber <= 5) {
+                showSelection(playerSelectionSpan);
+
+                const computerSelectionResult = computerSelection();
+                const computerSelectionSpan = document.getElementById(
+                    `computer-selection-${computerSelectionResult}`
+                );
+
+                showSelection(computerSelectionSpan);
+
+                const result = playRound(
+                    playerSelectionId,
+                    computerSelectionResult
+                );
+                const roundResult = showRoundResult(
+                    result,
+                    playerScore,
+                    computerScore
+                );
+
+                playerScore = roundResult.playerScore;
+                computerScore = roundResult.computerScore;
+
+                const roundResultMessage = document.createElement("p");
+                roundResultMessage.innerText = roundResult.message;
+
+                const roundResultContainer = document.getElementById(
+                    "round-result-container"
+                );
+                roundResultContainer.appendChild(roundResultMessage);
+            }
+
+            if (roundNumber === 5) {
+                showFinalResult(playerScore, computerScore);
+                askPlayAgain();
+            }
+        }
+    }
+
+    function showSelection(span) {
+        span.classList.add("active");
+        setTimeout(() => {
+            span.classList.remove("active");
+        }, 1000);
+    }
+
+    function computerSelection() {
         const randomElement = Math.floor(Math.random() * elements.length);
         return randomElement;
     }
 
     function playRound(playerSelection, computerSelection) {
-        const computerElement = computerSelection;
+        computerSelection;
 
         let playerElement;
         switch (playerSelection) {
@@ -93,40 +88,40 @@ window.addEventListener("DOMContentLoaded", () => {
                 break;
         }
 
-        const result = checkResults(playerElement, computerElement);
+        const result = checkResults(playerElement, computerSelection);
         return result;
     }
 
-    function checkResults(playerElement, computerElement) {
+    function checkResults(playerSelection, computerSelection) {
         const result = {
             message: null,
             playerWin: false,
         };
 
-        if (playerElement === computerElement) {
+        if (playerSelection === computerSelection) {
             result.message = "You're tied! Try again";
             result.playerWin = null;
             return result;
         }
 
-        let sum = playerElement + computerElement;
+        let sum = playerSelection + computerSelection;
 
         switch (sum) {
             case 1:
                 result.message = "Paper beats rock.";
-                if (playerElement === 1) {
+                if (playerSelection === 1) {
                     result.playerWin = true;
                 }
                 break;
             case 2:
                 result.message = "Rock beats scissors.";
-                if (playerElement === 0) {
+                if (playerSelection === 0) {
                     result.playerWin = true;
                 }
                 break;
             case 3:
                 result.message = "Scissors beats paper.";
-                if (playerElement === 2) {
+                if (playerSelection === 2) {
                     result.playerWin = true;
                 }
                 break;

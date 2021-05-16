@@ -62,6 +62,21 @@ h2 {
     background-color: #2ea3fc;
 }
 
+.score {
+    margin-top: 40px;
+    width: 20px;
+    height: 20px;
+    padding: 20px;
+    border: 2px solid #fcaa2e;
+    border-radius: 10px;
+    color: #fcaa2e;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .hidden {
     display: none;
 }
