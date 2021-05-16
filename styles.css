@@ -1,6 +1,11 @@
 body {
     margin: 0;
-    font-family: "Raleway", sans-serif;
+    font-family: "Rubik", sans-serif;
+    background-color: #313131;
+    color: #f7ffb0;
+}
+
+#wrapper {
 }
 
 .material-icons {
@@ -11,6 +16,12 @@ h1 {
     text-align: center;
     margin: 0;
     padding: 30px;
+    font-weight: 500;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 400;
 }
 
 #selections-container {
@@ -26,7 +37,7 @@ h1 {
     align-items: center;
 }
 
-.btn-selection {
+.span-selection {
     padding: 10px;
     margin-top: 10px;
     border: none;
@@ -47,8 +58,8 @@ h1 {
     background-color: #fcaa2e;
 }
 
-#wrapper {
-    background-color: #e2d2b3;
+.active {
+    background-color: #2ea3fc;
 }
 
 .hidden {
