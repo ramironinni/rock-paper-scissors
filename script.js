@@ -19,35 +19,24 @@ window.addEventListener("DOMContentLoaded", () => {
         if (playerSelectionId !== this.id) {
             roundNumber += 1;
             if (roundNumber <= 5) {
-                showSelection(playerSelectionSpan);
+                printSelection(playerSelectionSpan);
 
                 const computerSelectionResult = computerSelection();
                 const computerSelectionSpan = document.getElementById(
                     `computer-selection-${computerSelectionResult}`
                 );
 
-                showSelection(computerSelectionSpan);
+                printSelection(computerSelectionSpan);
 
-                const result = playRound(
-                    playerSelectionId,
+                const playerSelectionNum =
+                    convertPlayerSelectionToNum(playerSelectionId);
+
+                const checkedResult = checkResult(
+                    playerSelectionNum,
                     computerSelectionResult
                 );
-                const roundResult = showRoundResult(
-                    result,
-                    playerScore,
-                    computerScore
-                );
 
-                playerScore = roundResult.playerScore;
-                computerScore = roundResult.computerScore;
-
-                const roundResultMessage = document.createElement("p");
-                roundResultMessage.innerText = roundResult.message;
-
-                const roundResultContainer = document.getElementById(
-                    "round-result-container"
-                );
-                roundResultContainer.appendChild(roundResultMessage);
+                printRoundResult(checkedResult);
             }
 
             if (roundNumber === 5) {
@@ -57,7 +46,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function showSelection(span) {
+    function printSelection(span) {
         span.classList.add("active");
         setTimeout(() => {
             span.classList.remove("active");
@@ -69,86 +58,70 @@ window.addEventListener("DOMContentLoaded", () => {
         return randomElement;
     }
 
-    function playRound(playerSelection, computerSelection) {
-        computerSelection;
-
-        let playerElement;
+    function convertPlayerSelectionToNum(playerSelection) {
+        let playerSelectionNum;
         switch (playerSelection) {
             case "player-selection-rock":
-                playerElement = 0;
+                playerSelectionNum = 0;
                 break;
             case "player-selection-paper":
-                playerElement = 1;
+                playerSelectionNum = 1;
                 break;
             case "player-selection-scissors":
-                playerElement = 2;
+                playerSelectionNum = 2;
                 break;
             default:
-                playerElement = null;
+                playerSelectionNum = null;
                 break;
         }
-
-        const result = checkResults(playerElement, computerSelection);
-        return result;
+        return playerSelectionNum;
     }
 
-    function checkResults(playerSelection, computerSelection) {
-        const result = {
-            message: null,
-            playerWin: false,
-        };
-
-        if (playerSelection === computerSelection) {
-            result.message = "You're tied! Try again";
-            result.playerWin = null;
-            return result;
-        }
-
+    function checkResult(playerSelection, computerSelection) {
+        let message = null;
+        let winner;
         let sum = playerSelection + computerSelection;
 
-        switch (sum) {
-            case 1:
-                result.message = "Paper beats rock.";
-                if (playerSelection === 1) {
-                    result.playerWin = true;
-                }
-                break;
-            case 2:
-                result.message = "Rock beats scissors.";
-                if (playerSelection === 0) {
-                    result.playerWin = true;
-                }
-                break;
-            case 3:
-                result.message = "Scissors beats paper.";
-                if (playerSelection === 2) {
-                    result.playerWin = true;
-                }
-                break;
-            default:
-                result.message = "It seems there's a bug.";
-                break;
+        if (playerSelection === computerSelection) {
+            message = "You're tied! Try again";
+            winner = null;
+        } else {
+            switch (sum) {
+                case 1:
+                    message = "Paper beats rock.";
+                    winner = 1;
+                    break;
+                case 2:
+                    message = "Rock beats scissors.";
+                    winner = 0;
+                    break;
+                case 3:
+                    message = "Scissors beats paper.";
+                    winner = 2;
+                    break;
+                default:
+                    message = "It seems there's a bug.";
+                    break;
+            }
         }
 
-        return result;
+        if (winner === null) {
+            message += "";
+        } else if (playerSelection === winner) {
+            playerScore += 1;
+            message += " You win!";
+        } else if (computerSelection === winner) {
+            computerScore += 1;
+            message += " You loose!";
+        }
+        return message;
     }
 
-    function showRoundResult(result, playerScore, computerScore) {
-        if (result.playerWin) {
-            playerScore += 1;
-            result.message += " You win!";
-        } else if (result.playerWin === false) {
-            computerScore += 1;
-            result.message += " You loose!";
-        }
-
-        const message = `${result.message} Player score: ${playerScore}. Computer score: ${computerScore}`;
-        const roundResult = {
-            message,
-            playerScore: playerScore,
-            computerScore,
-        };
-        return roundResult;
+    function printRoundResult(result, playerScore, computerScore) {
+        const roundResultContainer = document.getElementById(
+            "round-result-container"
+        );
+        roundResultContainer.textContent = result;
     }
 
     function showFinalResult(playerScore, computerScore) {
