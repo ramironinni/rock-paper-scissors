@@ -3,6 +3,8 @@ window.addEventListener("DOMContentLoaded", () => {
     let roundNumber = 0;
     let playerScore = 0;
     let computerScore = 0;
+    const roundResultTime = 3000;
+
     const roundResultContainer = document.getElementById(
         "round-result-container"
     );
@@ -43,8 +45,10 @@ window.addEventListener("DOMContentLoaded", () => {
             }
 
             if (roundNumber === 5) {
-                showFinalResult(playerScore, computerScore);
-                askPlayAgain();
+                setTimeout(() => {
+                    showFinalResult(playerScore, computerScore);
+                    askPlayAgain();
+                }, roundResultTime);
             }
         }
     }
@@ -53,7 +57,7 @@ window.addEventListener("DOMContentLoaded", () => {
         span.classList.add("active");
         setTimeout(() => {
             span.classList.remove("active");
-        }, 1000);
+        }, roundResultTime);
     }
 
     function computerSelection() {
@@ -108,15 +112,21 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        if (winner === null) {
-            message += "";
-        } else if (playerSelection === winner) {
-            playerScore += 1;
-            message += " You win!";
-        } else if (computerSelection === winner) {
-            computerScore += 1;
-            message += " You loose!";
+        switch (winner) {
+            case null:
+                break;
+            case playerSelection:
+                playerScore += 1;
+                message += " You win!";
+                break;
+            case computerSelection:
+                computerScore += 1;
+                message += " You loose!";
+                break;
+            default:
+                break;
         }
+
         return message;
     }
 
@@ -128,6 +138,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
         const computerScoreDiv = document.getElementById("computer-score");
         computerScoreDiv.innerText = computerScore;
+
+        setTimeout(() => {
+            roundResultContainer.textContent = "";
+        }, roundResultTime);
     }
 
     function showFinalResult(playerScore, computerScore) {
@@ -158,7 +172,14 @@ window.addEventListener("DOMContentLoaded", () => {
                 window.location.reload();
             }
             if (e.target.id === "btn-again-no") {
-                console.log("BYE");
+                const body = document.getElementsByTagName("body")[0];
+
+                const byeDiv = document.createElement("div");
+                byeDiv.innerText = "Bye!";
+                byeDiv.classList.add("bye");
+
+                body.innerHTML = "";
+                body.appendChild(byeDiv);
             }
         });
     }
