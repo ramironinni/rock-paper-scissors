@@ -13,13 +13,17 @@ body {
 }
 
 h1 {
+    color: #313131;
+    background-color: #fcaa2e;
     text-align: center;
-    margin: 0;
-    padding: 30px;
+    font-size: 20px;
+    margin-top: 0;
+    padding: 20px 30px;
     font-weight: 500;
 }
 
 h2 {
+    margin-top: 0;
     font-size: 20px;
     font-weight: 400;
 }
@@ -63,7 +67,7 @@ h2 {
 }
 
 .score {
-    margin-top: 40px;
+    margin-top: 25px;
     width: 20px;
     height: 20px;
     padding: 20px;
@@ -75,6 +79,51 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#round-result-container {
+    border-radius: 10px;
+    color: #fcaa2e;
+    text-align: center;
+    margin: 10px 30px;
+    padding: 10px;
+}
+
+#game-winner {
+    background-color: #fcaa2e;
+    border-radius: 10px;
+    color: #313131;
+    font-weight: 600;
+    width: fit-content;
+    margin: auto;
+    padding: 15px;
+}
+
+#play-again-container {
+    border-radius: 10px;
+    color: #fcaa2e;
+    text-align: center;
+    padding: 10px;
+}
+
+#btn-again-yes,
+#btn-again-no {
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+    text-transform: none;
+    padding: 10px;
+    border-style: none;
+    border-radius: 10px;
+    width: 50px;
+    cursor: pointer;
+    background-color: #2ea3fc;
+}
+
+#btn-again-yes:hover,
+#btn-again-no:hover {
+    background-color: #2874ae;
 }
 
 .hidden {

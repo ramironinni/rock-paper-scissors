@@ -3,6 +3,9 @@ window.addEventListener("DOMContentLoaded", () => {
     let roundNumber = 0;
     let playerScore = 0;
     let computerScore = 0;
+    const roundResultContainer = document.getElementById(
+        "round-result-container"
+    );
 
     function playGame() {
         const playerSelectionContainer = document.getElementById(
@@ -117,15 +120,21 @@ window.addEventListener("DOMContentLoaded", () => {
         return message;
     }
 
-    function printRoundResult(result, playerScore, computerScore) {
-        const roundResultContainer = document.getElementById(
-            "round-result-container"
-        );
-        roundResultContainer.textContent = result;
+    function printRoundResult(checkedResult) {
+        roundResultContainer.textContent = checkedResult;
+
+        const playerScoreDiv = document.getElementById("player-score");
+        playerScoreDiv.innerText = playerScore;
+
+        const computerScoreDiv = document.getElementById("computer-score");
+        computerScoreDiv.innerText = computerScore;
     }
 
     function showFinalResult(playerScore, computerScore) {
-        const finalScore = document.getElementById("final-score");
+        roundResultContainer.textContent = "";
+        const gameWinner = document.getElementById("game-winner");
+
+        gameWinner.classList.remove("hidden");
 
         let winner;
         if (playerScore > computerScore) {
@@ -136,11 +145,7 @@ window.addEventListener("DOMContentLoaded", () => {
             winner = "NOBODY! PLAY AGAIN";
         }
 
-        finalScore.textContent = `
-        Final score
-        >> Player score: ${playerScore}
-        >> Computer score: ${computerScore}
-        WINNER: ${winner}`;
+        gameWinner.textContent = `WINNER: ${winner}`;
     }
 
     function askPlayAgain() {
